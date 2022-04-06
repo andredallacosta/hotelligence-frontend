@@ -1,10 +1,9 @@
-import { combineReducers } from 'redux';
+import { combineReducers } from "redux";
 
-import { alert } from './alert.reducer';
-
+import { alert } from "./alert.reducer";
 
 const info = combineReducers({
-    alert
+  alert,
 });
 
 export default info;

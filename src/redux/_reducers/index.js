@@ -1,7 +1,7 @@
-import { combineReducers } from 'redux';
+import { combineReducers } from "redux";
 
-import info from './info';
-import security from './security';
+import info from "./info";
+import security from "./security";
 
 const rootReducer = combineReducers({
   info,

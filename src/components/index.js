@@ -1,1 +1,2 @@
-export * from '/UI';
+/* eslint-disable import/extensions */
+export * from "~/UI";
