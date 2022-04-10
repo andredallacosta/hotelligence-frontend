@@ -1,31 +1,37 @@
-import axios from "axios";
 import { authConstants } from "Redux@Constants";
 import { request, success, failure } from "Redux@Helpers";
+import axios from "axios";
 
-axios.defaults.baseURL = "http://127.0.0.1:8000/";
+import api from "../../../services/api";
 
-// Login funcion
 function Login(data) {
   return (dispatch) => {
-    const { username, password } = data;
+    const { username, password, token } = data;
+
     dispatch(request(authConstants.LOGIN_REQUEST, "usuario", "Logando..."));
-    axios
-      .post("api-token-auth/", {
-        username,
-        password,
-      })
-      .then((response) => {
-        localStorage.setItem("token", response.data?.token);
-        dispatch(success(authConstants.LOGIN_SUCCESS, username));
-      })
-      .catch(() => {
-        dispatch(
-          failure(authConstants.LOGIN_FAILURE, "error", {
-            title: "Erro",
-            msg: "Usuário ou senha Inválidos!",
-          })
-        );
+
+    if (token) {
+      api.auth.verifyToken(token).then((response) => {
+        axios.defaults.headers.common.Authorization = `Token ${token}`;
+        dispatch(success(authConstants.LOGIN_SUCCESS, response.data));
       });
+    } else {
+      api.auth
+        .login({ username, password })
+        .then((response) => {
+          axios.defaults.headers.common.Authorization = `Token ${token}`;
+          localStorage.setItem("token", response.data?.token);
+          dispatch(success(authConstants.LOGIN_SUCCESS, response.data));
+        })
+        .catch(() => {
+          dispatch(
+            failure(authConstants.LOGIN_FAILURE, "error", {
+              title: "Erro",
+              msg: "Usuário ou senha Inválidos!",
+            })
+          );
+        });
+    }
   };
 }
 

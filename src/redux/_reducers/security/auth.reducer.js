@@ -1,11 +1,7 @@
 /* eslint-disable default-param-last */
 import { authConstants } from "../../_constants";
 
-const user = localStorage.getItem("username");
-// let token = localStorage.getItem('token');
-
-const initialState = () => ({ user });
-//   return token ? { loggedIn: true, user } : { loggedIn: false };
+const initialState = () => ({ user: {} });
 
 export function auth(state = initialState(), action) {
   switch (action.type) {
@@ -15,11 +11,13 @@ export function auth(state = initialState(), action) {
         user: action.payload,
       };
     case authConstants.LOGIN_SUCCESS:
+      localStorage.setItem("token", action.payload?.token);
       return {
         loggedIn: true,
         user: action.payload,
       };
     case authConstants.LOGIN_FAILURE:
+      localStorage.removeItem("token");
       return {};
     case authConstants.LOGOUT:
       return {
