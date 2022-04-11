@@ -1,18 +1,20 @@
 import React, { useContext, useEffect, useState } from "react";
-
+import PropTypes from "prop-types";
 import {
   BrowserRouter as Router,
   Switch,
   Route,
-  useRouteMatch,
+  Redirect,
+  useHistory,
 } from "react-router-dom";
 
 import { ThemeProvider, makeStyles } from "@material-ui/core/styles";
-import { Provider, useSelector } from "react-redux";
+import { Provider, useSelector, shallowEqual, useDispatch } from "react-redux";
 import { light as ThemeLight } from "@Utils";
 import { store } from "Redux@Helpers";
-import { Dialog, Layout } from "@Components/UI";
-import { LoginPage, HomePage } from "./views";
+import { Dialog } from "@Components/UI";
+import { LoginPage, RoomsPage } from "./views";
+import { hotelActions, authActions } from "./redux/_actions/security";
 
 const useStyles = makeStyles((theme) => ({
   globalStyle: {
@@ -25,10 +27,7 @@ const useStyles = makeStyles((theme) => ({
 const AppConstantsDefault = {
   setTheme: null,
   currentTheme: "light",
-  version: "0.0.1", // Para cada commit, o terceiro número sobe 1,
-  // para cada release o segundo número sobe 1
-  // Para cada versão oficial lançada, o primeiro número sobe 1
-  // Quando o número a esquerda sobe, os demais ficam 0, ex: 0.2.12 -> 0.3.0
+  version: "0.0.1",
   header: {
     currentTitle: "Inicio",
   },
@@ -39,15 +38,35 @@ const AppConstantsDefault = {
 
 export const AppContext = React.createContext(AppConstantsDefault);
 
-function MainContainer() {
-  const match = useRouteMatch();
-  return (
-    <Layout>
-      <Switch>
-        <Route exact path={`${match.url}`} component={HomePage} />
-      </Switch>
-    </Layout>
+function LoggedRoute({ path, component, exact }) {
+  const history = useHistory();
+  const dispatch = useDispatch();
+  const { loggedIn, user } = useSelector(
+    (state) => state.security.auth,
+    shallowEqual
   );
+
+  useEffect(() => {
+    if (!loggedIn) {
+      const token = localStorage.getItem("token");
+      if (token && !loggedIn) {
+        dispatch(authActions.Login({ token }));
+      } else {
+        history.push("/login");
+      }
+    }
+  }, []);
+
+  useEffect(() => {
+    if (loggedIn && user?.token) {
+      dispatch(hotelActions.GetUserHotel());
+    }
+  }, [user.token, loggedIn]);
+
+  if (loggedIn) {
+    return <Route exact={exact} path={path} component={component} />;
+  }
+  return null;
 }
 
 function AppContainer() {
@@ -71,8 +90,15 @@ function AppContainer() {
     <div className={classes.globalStyle}>
       <Router>
         <Switch>
-          <Route path="/" exact component={LoginPage} />
-          <Route path="/app" exact component={MainContainer} />
+          {/* eslint-disable-next-line react/no-unstable-nested-components */}
+          <Route exact path="/" component={() => <Redirect to="/login" />} />
+          <Route exact path="/login" component={LoginPage} />
+          <LoggedRoute path="/hotelaria" component={RoomsPage} />
+          {/* <Route exact path="/hotelaria/:id" component={HomePage} />
+          <Route exact path="/clientes" component={HomePage} />
+          <Route exact path="/clientes/:id" component={HomePage} />
+          <Route exact path="/financeiro" component={HomePage} />
+          <Route exact path="/hotelaria/caixa" component={HomePage} /> */}
         </Switch>
       </Router>
       <Dialog
@@ -102,3 +128,9 @@ export default function App() {
     </Provider>
   );
 }
+
+LoggedRoute.propTypes = {
+  path: PropTypes.string.isRequired,
+  component: PropTypes.func.isRequired,
+  exact: PropTypes.bool.isRequired,
+};

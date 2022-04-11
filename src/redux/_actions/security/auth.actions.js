@@ -1,8 +1,8 @@
-import { authConstants } from "Redux@Constants";
-import { request, success, failure } from "Redux@Helpers";
-import axios from "axios";
+import axios from "@Utils/api/http";
 
-import api from "../../../services/api";
+import api from "@Utils/api";
+import { request, success, failure } from "Redux@Helpers";
+import { authConstants } from "Redux@Constants";
 
 function Login(data) {
   return (dispatch) => {
@@ -19,7 +19,7 @@ function Login(data) {
       api.auth
         .login({ username, password })
         .then((response) => {
-          axios.defaults.headers.common.Authorization = `Token ${token}`;
+          axios.defaults.headers.common.Authorization = `Token ${response.data?.token}`;
           localStorage.setItem("token", response.data?.token);
           dispatch(success(authConstants.LOGIN_SUCCESS, response.data));
         })

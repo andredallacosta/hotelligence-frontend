@@ -1,7 +1,7 @@
 import axios from "axios";
 
 // eslint-disable-next-line import/no-mutable-exports
-const url = "http://localhost:8000";
+const url = "http://localhost:8000/api/";
 
 // if (process.env.REACT_APP_ELIXIR_ENV === "production") {
 //   url = "https://api-dot-nexus-production-303715.uc.r.appspot.com/";
@@ -13,10 +13,10 @@ const url = "http://localhost:8000";
 //   url = "http://localhost:8000";
 // }
 
-const client = axios.create({
+export const api = axios.create({
   baseURL: url,
 });
 
 export const baseUrl = url;
 
-export default client;
+export default api;

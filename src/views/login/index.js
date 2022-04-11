@@ -30,13 +30,13 @@ export default function LoginPage() {
 
   useEffect(() => {
     if (loggedIn) {
-      history.push("/app");
+      history.push("/hotelaria");
     }
   }, [loggedIn]);
 
   useEffect(() => {
     const token = localStorage.getItem("token");
-    if (token) {
+    if (token && !loggedIn) {
       dispatch(authActions.Login({ token }));
     }
   }, []);

@@ -1,16 +1,16 @@
 import axios from "./http";
 
 export default {
-  login(data) {
+  retrieve(id) {
     return axios
-      .post("api-token-auth/", data)
+      .get(`hotel/${id}`)
       .then((response) => Promise.resolve(response))
       .catch((error) => Promise.reject(error));
   },
 
-  verifyToken(token) {
+  getUserHotel() {
     return axios
-      .get(`api-token-auth/?token=${token}`, token)
+      .get("hotel/user")
       .then((response) => Promise.resolve(response))
       .catch((error) => Promise.reject(error));
   },
