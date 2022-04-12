@@ -93,7 +93,7 @@ function AppContainer() {
           {/* eslint-disable-next-line react/no-unstable-nested-components */}
           <Route exact path="/" component={() => <Redirect to="/login" />} />
           <Route exact path="/login" component={LoginPage} />
-          <LoggedRoute path="/hotelaria" component={RoomsPage} />
+          <LoggedRoute exact path="/hotelaria" component={RoomsPage} />
           {/* <Route exact path="/hotelaria/:id" component={HomePage} />
           <Route exact path="/clientes" component={HomePage} />
           <Route exact path="/clientes/:id" component={HomePage} />

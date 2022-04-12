@@ -1,7 +1,13 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 
-import { Grid, Typography } from "@material-ui/core";
-import { Paper, Layout } from "@Components/UI";
+import { Grid, CircularProgress, Container } from "@material-ui/core";
+import { Layout, RoomCard } from "@Components/UI";
+import {
+  KeyboardDatePicker,
+  MuiPickersUtilsProvider,
+} from "@material-ui/pickers";
+import DateFnsUtils from "@date-io/date-fns";
+import brLocale from "date-fns/locale/pt-BR";
 
 import api from "@Utils/api";
 import useStyles from "./styles";
@@ -9,33 +15,59 @@ import useStyles from "./styles";
 export default function Rooms() {
   const classes = useStyles();
 
-  useEffect(() => {}, []);
+  const [rooms, setRooms] = useState([]);
+  const [selectedDate, handleDateChange] = useState(new Date());
+  const [loading, setLoading] = useState(true);
+
+  const getRooms = () => {
+    setLoading(true);
+    api.room
+      .list({ date: selectedDate })
+      .then((response) => {
+        setRooms(response.data);
+        setLoading(false);
+      })
+      .catch(() => {
+        setLoading(false);
+      });
+  };
+
+  useEffect(() => {
+    getRooms();
+  }, []);
 
   return (
     <Layout>
-      <Grid
-        container
-        alignItems="center"
-        justify="center"
-        style={{ height: "100%", textAlign: "center" }}
-      >
-        <Grid item xs={10} sm={5} md={4} lg={3} xl={3}>
-          <Typography variant="h2" className={classes.text}>
-            Olá!
-          </Typography>
-          <Paper className={classes.paper}>
-            <Typography variant="body1">
-              Comece a editar agora mesmo! A aplicação principal fica em App.js,
-              coloque suas rotas e suas views seguindo o padrão descrito no
-              read.me :D ! Conto com você!
-            </Typography>
-          </Paper>
-          <Typography variant="body1" className={classes.text} color="primary">
-            Feito com ❤ por <a href="http://gmartinu.dev">Gabriel Martinusso</a>{" "}
-            e <a href="http://felps.dev">Felipe Correa</a>
-          </Typography>
-        </Grid>
-      </Grid>
+      <Container className={classes.container}>
+        <div className={classes.datePicker}>
+          <MuiPickersUtilsProvider utils={DateFnsUtils} locale={brLocale}>
+            <KeyboardDatePicker
+              inputVariant="outlined"
+              value={selectedDate}
+              onChange={handleDateChange}
+              format="dd/MM/yyyy"
+              label="Data"
+              variant="outlined"
+              autoOk
+              invalidDateMessage="Data inválida"
+            />
+          </MuiPickersUtilsProvider>
+        </div>
+
+        {loading ? (
+          <div className={classes.loading}>
+            <CircularProgress size={100} />
+          </div>
+        ) : (
+          <Grid container spacing={2} className={classes.cardsContainer}>
+            {rooms.map((room) => (
+              <Grid item xs={6} md={3} lg={2} key={`room: ${room.number}`}>
+                <RoomCard data={room} selectedDate={selectedDate} />
+              </Grid>
+            ))}
+          </Grid>
+        )}
+      </Container>
     </Layout>
   );
 }

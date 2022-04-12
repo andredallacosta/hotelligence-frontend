@@ -10,7 +10,6 @@ const toolbarHeight = "48px";
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
-    height: `calc(100vh - ${toolbarHeight} * 2)`,
   },
   toolbarUp: {
     minHeight: toolbarHeight,
