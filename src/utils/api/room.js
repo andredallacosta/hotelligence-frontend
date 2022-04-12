@@ -7,4 +7,11 @@ export default {
       .then((response) => Promise.resolve(response))
       .catch((error) => Promise.reject(error));
   },
+
+  retrieve(id) {
+    return axios
+      .get(`room/${id}`)
+      .then((response) => Promise.resolve(response))
+      .catch((error) => Promise.reject(error));
+  },
 };

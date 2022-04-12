@@ -13,7 +13,7 @@ import { Provider, useSelector, shallowEqual, useDispatch } from "react-redux";
 import { light as ThemeLight } from "@Utils";
 import { store } from "Redux@Helpers";
 import { Dialog } from "@Components/UI";
-import { LoginPage, RoomsPage } from "./views";
+import { LoginPage, RoomsPage, RoomPage } from "./views";
 import { hotelActions, authActions } from "./redux/_actions/security";
 
 const useStyles = makeStyles((theme) => ({
@@ -94,11 +94,11 @@ function AppContainer() {
           <Route exact path="/" component={() => <Redirect to="/login" />} />
           <Route exact path="/login" component={LoginPage} />
           <LoggedRoute exact path="/hotelaria" component={RoomsPage} />
-          {/* <Route exact path="/hotelaria/:id" component={HomePage} />
-          <Route exact path="/clientes" component={HomePage} />
-          <Route exact path="/clientes/:id" component={HomePage} />
-          <Route exact path="/financeiro" component={HomePage} />
-          <Route exact path="/hotelaria/caixa" component={HomePage} /> */}
+          <LoggedRoute exact path="/hotelaria/:id" component={RoomPage} />
+          {/* <Route exact path="/clientes" component={HomePage} /> */}
+          {/* <Route exact path="/clientes/:id" component={HomePage} /> */}
+          {/* <Route exact path="/financeiro" component={HomePage} /> */}
+          {/* <Route exact path="/hotelaria/caixa" component={HomePage} /> */}
         </Switch>
       </Router>
       <Dialog

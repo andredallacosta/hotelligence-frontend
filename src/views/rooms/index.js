@@ -50,6 +50,7 @@ export default function Rooms() {
               variant="outlined"
               autoOk
               invalidDateMessage="Data inválida"
+              cancelLabel="Cancelar"
             />
           </MuiPickersUtilsProvider>
         </div>

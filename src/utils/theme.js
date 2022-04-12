@@ -36,6 +36,12 @@ export const light = createMuiTheme(
         disabled: "rgba(0, 0, 0, 0.38)",
         hint: "rgba(0, 0, 0, 0.38)",
       },
+      success: {
+        light: "#4caf50",
+        main: "#2e7d32",
+        dark: "#1b5e20",
+        contrastText: "#fff",
+      },
     },
   },
   ptBR
