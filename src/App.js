@@ -13,8 +13,8 @@ import { Provider, useSelector, shallowEqual, useDispatch } from "react-redux";
 import { light as ThemeLight } from "@Utils";
 import { store } from "Redux@Helpers";
 import { Dialog } from "@Components/UI";
-import { LoginPage, RoomsPage, RoomPage } from "./views";
-import { hotelActions, authActions } from "./redux/_actions/security";
+import { hotelActions, authActions } from "Redux@Actions";
+import { LoginPage, RoomsPage, RoomPage } from "@Views";
 
 const useStyles = makeStyles((theme) => ({
   globalStyle: {

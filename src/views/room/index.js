@@ -11,6 +11,7 @@ import { ArrowBackIos, CheckCircle, Cancel } from "@material-ui/icons";
 import { Button, Layout } from "@Components/UI";
 
 import api from "@Utils/api";
+import RoomCard from "./components/RoomCard";
 import useStyles from "./styles";
 
 export default function Room() {
@@ -97,6 +98,10 @@ export default function Room() {
                 )}{" "}
                 Sacada
               </Typography>
+            </Grid>
+
+            <Grid item xs={12} md={6}>
+              <RoomCard room={room} />
             </Grid>
           </Grid>
         )}

@@ -10,6 +10,7 @@ module.exports = {
       "@Utils": path.resolve(__dirname, "src/utils"),
       "@Assets": path.resolve(__dirname, "src/assets"),
       "@App": path.resolve(__dirname, "src/App.js"),
+      "@Views": path.resolve(__dirname, "src/views"),
     },
   },
 };

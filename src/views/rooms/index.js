@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
-
+import { useSelector, shallowEqual, useDispatch } from "react-redux";
 import { Grid, CircularProgress, Container } from "@material-ui/core";
-import { Layout, RoomCard } from "@Components/UI";
+import { Layout } from "@Components/UI";
+import { appActions } from "Redux@Actions";
 import {
   KeyboardDatePicker,
   MuiPickersUtilsProvider,
@@ -10,14 +11,24 @@ import DateFnsUtils from "@date-io/date-fns";
 import brLocale from "date-fns/locale/pt-BR";
 
 import api from "@Utils/api";
+import RoomCard from "./components/RoomCard";
 import useStyles from "./styles";
 
 export default function Rooms() {
   const classes = useStyles();
+  const dispatch = useDispatch();
 
   const [rooms, setRooms] = useState([]);
-  const [selectedDate, handleDateChange] = useState(new Date());
   const [loading, setLoading] = useState(true);
+
+  const { selectedDate } = useSelector(
+    (state) => state.security.auth,
+    shallowEqual
+  );
+
+  const handleDateChange = (date) => {
+    dispatch(appActions.SetSelectedDate(date));
+  };
 
   const getRooms = () => {
     setLoading(true);

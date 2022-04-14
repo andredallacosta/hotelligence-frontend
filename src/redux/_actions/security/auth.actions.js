@@ -11,10 +11,21 @@ function Login(data) {
     dispatch(request(authConstants.LOGIN_REQUEST, "usuario", "Logando..."));
 
     if (token) {
-      api.auth.verifyToken(token).then((response) => {
-        axios.defaults.headers.common.Authorization = `Token ${token}`;
-        dispatch(success(authConstants.LOGIN_SUCCESS, response.data));
-      });
+      api.auth
+        .verifyToken(token)
+        .then((response) => {
+          axios.defaults.headers.common.Authorization = `Token ${token}`;
+          dispatch(success(authConstants.LOGIN_SUCCESS, response.data));
+        })
+        .catch(() => {
+          localStorage.removeItem("token");
+          dispatch(
+            failure(authConstants.LOGIN_FAILURE, "error", {
+              title: "Erro",
+              msg: "Sessão expirada!",
+            })
+          );
+        });
     } else {
       api.auth
         .login({ username, password })
