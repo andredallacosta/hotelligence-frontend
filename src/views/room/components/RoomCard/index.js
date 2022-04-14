@@ -6,6 +6,7 @@ import {
   CardActions,
   CardContent,
   CircularProgress,
+  Typography,
 } from "@material-ui/core";
 
 import { RoomStatus, Button } from "@Components/UI";
@@ -50,6 +51,24 @@ export default function RoomCard(props) {
         return "idle";
     }
   });
+
+  const getTotalBookingValue = () =>
+    (
+      ((new Date(booking.end_date).getTime() -
+        new Date(booking.start_date).getTime()) /
+        (1000 * 3600 * 24)) *
+      booking.daily_value
+    ).toLocaleString("pt-br", { style: "currency", currency: "BRL" });
+
+  const getTotalMissingValue = () =>
+    (
+      ((new Date(booking.end_date).getTime() -
+        new Date(booking.start_date).getTime()) /
+        (1000 * 3600 * 24)) *
+        booking.daily_value +
+      booking.extras_value -
+      booking.paid_value
+    ).toLocaleString("pt-br", { style: "currency", currency: "BRL" });
 
   const checkoutRoom = () => {
     setLoading(true);
@@ -167,6 +186,26 @@ export default function RoomCard(props) {
         <>
           <CardContent className={classes.content}>
             <RoomStatus data={room} selectedDate={selectedDate} />
+            {roomStatus === "booked" && (
+              <div className={classes.info}>
+                <Typography>
+                  De {new Date(booking.start_date).toLocaleDateString()} à{" "}
+                  {new Date(booking.end_date).toLocaleDateString("pt-br")}
+                </Typography>
+                <Typography>Valor total: {getTotalBookingValue()}</Typography>
+              </div>
+            )}
+            {roomStatus === "occupied" && (
+              <div className={classes.info}>
+                <Typography>
+                  De {new Date(booking.start_date).toLocaleDateString()} à{" "}
+                  {new Date(booking.end_date).toLocaleDateString("pt-br")}
+                </Typography>
+                <Typography>
+                  Valor total restante: {getTotalMissingValue()}
+                </Typography>
+              </div>
+            )}
           </CardContent>
           <CardActions className={classes.cardActions}>
             {roomStatus === "available" && (

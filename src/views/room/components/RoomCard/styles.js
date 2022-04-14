@@ -18,6 +18,9 @@ const useStyles = makeStyles((theme) => ({
   actionButton: {
     border: "1px solid #000",
   },
+  info: {
+    marginTop: "10px",
+  },
 }));
 
 export default useStyles;
