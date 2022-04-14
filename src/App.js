@@ -90,8 +90,12 @@ function AppContainer() {
     <div className={classes.globalStyle}>
       <Router>
         <Switch>
-          {/* eslint-disable-next-line react/no-unstable-nested-components */}
-          <Route exact path="/" component={() => <Redirect to="/login" />} />
+          <Route
+            exact
+            path="/"
+            /* eslint-disable-next-line react/no-unstable-nested-components */
+            component={() => <Redirect to="/hotelaria" />}
+          />
           <Route exact path="/login" component={LoginPage} />
           <LoggedRoute exact path="/hotelaria" component={RoomsPage} />
           <LoggedRoute exact path="/hotelaria/:id" component={RoomPage} />

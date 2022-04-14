@@ -13,6 +13,12 @@ const useStyles = makeStyles((theme) => ({
   infoContainer: {
     marginTop: "10%",
   },
+  cardContainer: {
+    display: "flex",
+    justifyContent: "space-around",
+    alignItems: "flex-start",
+    flexDirection: "column",
+  },
   backButton: {
     margin: "20px",
   },
@@ -29,6 +35,18 @@ const useStyles = makeStyles((theme) => ({
   cancel: {
     color: theme.palette.error.main,
     marginRight: "3px",
+  },
+  button: {
+    [theme.breakpoints.down("xs")]: {
+      marginTop: "20px",
+    },
+    border: "1px solid #000",
+  },
+  buttonsDiv: {
+    display: "flex",
+    justifyContent: "space-around",
+    alignItems: "center",
+    width: "60%",
   },
 }));
 

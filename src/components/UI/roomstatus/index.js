@@ -11,13 +11,14 @@ export default function RoomStatus(props) {
   const booking = data.bookings?.find(
     (b) =>
       selectedDate >= new Date(b.start_date) &&
-      selectedDate <= new Date(b.end_date)
+      selectedDate <= new Date(b.end_date) &&
+      b.check_out === false
   );
 
   const getText = () => {
     switch (data.status) {
       case "available":
-        if (booking?.check_in) {
+        if (booking?.check_in && booking?.check_out === false) {
           return <Typography className={classes.occupied}>Ocupado</Typography>;
         }
         if (booking?.check_in === false) {

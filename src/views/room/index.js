@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useParams, useHistory } from "react-router-dom";
-
+import { useDispatch } from "react-redux";
 import {
   Grid,
   CircularProgress,
@@ -11,12 +11,14 @@ import { ArrowBackIos, CheckCircle, Cancel } from "@material-ui/icons";
 import { Button, Layout } from "@Components/UI";
 
 import api from "@Utils/api";
+import { failure } from "Redux@Helpers";
 import RoomCard from "./components/RoomCard";
 import useStyles from "./styles";
 
 export default function Room() {
   const classes = useStyles();
   const history = useHistory();
+  const dispatch = useDispatch();
   const { id: roomId } = useParams();
 
   const [room, setRoom] = useState({});
@@ -31,7 +33,31 @@ export default function Room() {
         setLoading(false);
       })
       .catch(() => {
+        dispatch(
+          failure("", "error", {
+            title: "Erro",
+            msg: "Não foi possível obter o quarto",
+          })
+        );
+      });
+  };
+
+  const deleteRoom = () => {
+    setLoading(true);
+    api.room
+      .delete(room.id)
+      .then(() => {
         setLoading(false);
+        history.push("/hotelaria");
+      })
+      .catch(() => {
+        setLoading(false);
+        dispatch(
+          failure("", "error", {
+            title: "Erro",
+            msg: "Não foi possível deletar o quarto",
+          })
+        );
       });
   };
 
@@ -54,7 +80,7 @@ export default function Room() {
           </div>
         ) : (
           <Grid container spacing={2} className={classes.infoContainer}>
-            <Grid item xs={12} md={6}>
+            <Grid item xs={12} sm={6}>
               <Typography className={classes.text}>
                 Número: {room.number}
               </Typography>
@@ -100,8 +126,20 @@ export default function Room() {
               </Typography>
             </Grid>
 
-            <Grid item xs={12} md={6}>
-              <RoomCard room={room} />
+            <Grid item xs={12} sm={6} className={classes.cardContainer}>
+              <RoomCard room={room} getRoom={() => getRoom()} />
+              <div className={classes.buttonsDiv}>
+                <Button
+                  label="Excluir"
+                  onClick={() => deleteRoom()}
+                  className={classes.button}
+                />
+                <Button
+                  label="Editar"
+                  onClick={() => deleteRoom()}
+                  className={classes.button}
+                />
+              </div>
             </Grid>
           </Grid>
         )}

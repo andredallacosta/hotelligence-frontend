@@ -22,7 +22,7 @@ export default function Rooms() {
   const [loading, setLoading] = useState(true);
 
   const { selectedDate } = useSelector(
-    (state) => state.security.auth,
+    (state) => state.platform.app,
     shallowEqual
   );
 
