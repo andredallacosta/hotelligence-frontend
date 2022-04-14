@@ -8,7 +8,7 @@ import { RoomStatus } from "@Components/UI";
 import useStyles from "./styles";
 
 export default function RoomCard(props) {
-  const { data, selectedDate } = props;
+  const { data } = props;
   const classes = useStyles();
   const history = useHistory();
 
@@ -21,7 +21,7 @@ export default function RoomCard(props) {
         <Typography align="left">Número: {data.number}</Typography>
         <Typography align="left">Tipo: {data.type?.type}</Typography>
         <Typography align="left">Tipo: {data.type?.capacity}</Typography>
-        <RoomStatus data={data} selectedDate={selectedDate} />
+        <RoomStatus data={data} />
       </CardContent>
     </Card>
   );
@@ -29,5 +29,4 @@ export default function RoomCard(props) {
 
 RoomCard.propTypes = {
   data: PropTypes.object.isRequired,
-  selectedDate: PropTypes.instanceOf(Date).isRequired,
 };

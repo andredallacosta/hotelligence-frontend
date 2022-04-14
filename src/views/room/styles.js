@@ -48,6 +48,13 @@ const useStyles = makeStyles((theme) => ({
     alignItems: "center",
     width: "60%",
   },
+  datePicker: {
+    width: "60%",
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    flexDirection: "column",
+  },
 }));
 
 export default useStyles;

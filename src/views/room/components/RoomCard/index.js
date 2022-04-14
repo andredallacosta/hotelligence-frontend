@@ -185,7 +185,7 @@ export default function RoomCard(props) {
       ) : (
         <>
           <CardContent className={classes.content}>
-            <RoomStatus data={room} selectedDate={selectedDate} />
+            <RoomStatus data={room} />
             {roomStatus === "booked" && (
               <div className={classes.info}>
                 <Typography>

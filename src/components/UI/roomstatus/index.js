@@ -1,12 +1,18 @@
 import React from "react";
 import PropTypes from "prop-types";
+import { useSelector, shallowEqual } from "react-redux";
 import { Typography } from "@material-ui/core";
 
 import useStyles from "./styles";
 
 export default function RoomStatus(props) {
-  const { data, selectedDate } = props;
+  const { data } = props;
   const classes = useStyles();
+
+  const { selectedDate } = useSelector(
+    (state) => state.platform.app,
+    shallowEqual
+  );
 
   const booking = data.bookings?.find(
     (b) =>
@@ -47,5 +53,4 @@ export default function RoomStatus(props) {
 
 RoomStatus.propTypes = {
   data: PropTypes.object.isRequired,
-  selectedDate: PropTypes.instanceOf(Date).isRequired,
 };

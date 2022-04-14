@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useParams, useHistory } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import { useSelector, shallowEqual, useDispatch } from "react-redux";
 import {
   Grid,
   CircularProgress,
@@ -8,8 +8,15 @@ import {
   Typography,
 } from "@material-ui/core";
 import { ArrowBackIos, CheckCircle, Cancel } from "@material-ui/icons";
-import { Button, Layout } from "@Components/UI";
+import {
+  KeyboardDatePicker,
+  MuiPickersUtilsProvider,
+} from "@material-ui/pickers";
+import DateFnsUtils from "@date-io/date-fns";
+import brLocale from "date-fns/locale/pt-BR";
 
+import { Button, Layout } from "@Components/UI";
+import { appActions } from "Redux@Actions";
 import api from "@Utils/api";
 import { failure } from "Redux@Helpers";
 import RoomCard from "./components/RoomCard";
@@ -20,6 +27,11 @@ export default function Room() {
   const history = useHistory();
   const dispatch = useDispatch();
   const { id: roomId } = useParams();
+
+  const { selectedDate } = useSelector(
+    (state) => state.platform.app,
+    shallowEqual
+  );
 
   const [room, setRoom] = useState({});
   const [loading, setLoading] = useState(true);
@@ -59,6 +71,11 @@ export default function Room() {
           })
         );
       });
+  };
+
+  const handleDateChange = (date) => {
+    dispatch(appActions.SetSelectedDate(date));
+    getRoom();
   };
 
   useEffect(() => {
@@ -127,6 +144,21 @@ export default function Room() {
             </Grid>
 
             <Grid item xs={12} sm={6} className={classes.cardContainer}>
+              <div className={classes.datePicker}>
+                <MuiPickersUtilsProvider utils={DateFnsUtils} locale={brLocale}>
+                  <KeyboardDatePicker
+                    inputVariant="outlined"
+                    value={selectedDate}
+                    onChange={handleDateChange}
+                    format="dd/MM/yyyy"
+                    label="Data"
+                    variant="outlined"
+                    autoOk
+                    invalidDateMessage="Data inválida"
+                    cancelLabel="Cancelar"
+                  />
+                </MuiPickersUtilsProvider>
+              </div>
               <RoomCard room={room} getRoom={() => getRoom()} />
               <div className={classes.buttonsDiv}>
                 <Button
