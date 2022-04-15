@@ -1,7 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { useSelector, shallowEqual, useDispatch } from "react-redux";
-import { Grid, CircularProgress, Container } from "@material-ui/core";
-import { Layout } from "@Components/UI";
+import {
+  Grid,
+  CircularProgress,
+  Container,
+  IconButton,
+} from "@material-ui/core";
+import { AddCircleOutline } from "@material-ui/icons";
+import { Layout, Modal } from "@Components/UI";
+import { RoomForm } from "@Components/forms";
 import { appActions } from "Redux@Actions";
 import {
   KeyboardDatePicker,
@@ -20,6 +27,7 @@ export default function Rooms() {
 
   const [rooms, setRooms] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [roomModal, setRoomModal] = useState(false);
 
   const { selectedDate } = useSelector(
     (state) => state.platform.app,
@@ -77,9 +85,32 @@ export default function Rooms() {
                 <RoomCard data={room} selectedDate={selectedDate} />
               </Grid>
             ))}
+            <Grid item xs={6} md={3} lg={2}>
+              <IconButton onClick={() => setRoomModal(true)}>
+                <AddCircleOutline classes={{ root: classes.addRoomIcon }} />
+              </IconButton>
+            </Grid>
           </Grid>
         )}
       </Container>
+
+      <Modal
+        title="Adicionar Quarto"
+        body={
+          <RoomForm
+            onSuccess={() => {
+              setRoomModal(false);
+              getRooms();
+            }}
+          />
+        }
+        open={roomModal}
+        onClose={() => {
+          setRoomModal(false);
+        }}
+        showAcceptButton={false}
+        showCancelButton={false}
+      />
     </Layout>
   );
 }

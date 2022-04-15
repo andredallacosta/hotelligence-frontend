@@ -5,3 +5,5 @@ export { default as PassField } from "./passfield";
 export { default as TextField } from "./textfield";
 export { default as Button } from "./button";
 export { default as RoomStatus } from "./roomstatus";
+export { default as ButtonLoading } from "./buttonloading";
+export { default as Modal } from "./modal";

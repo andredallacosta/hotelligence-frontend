@@ -12,6 +12,7 @@ import {
 import { RoomStatus, Button } from "@Components/UI";
 import { failure } from "Redux@Helpers";
 import api from "@Utils/api";
+import { getTotalBookingValue } from "@Utils/helpers";
 import useStyles from "./styles";
 
 export default function RoomCard(props) {
@@ -51,14 +52,6 @@ export default function RoomCard(props) {
         return "idle";
     }
   });
-
-  const getTotalBookingValue = () =>
-    (
-      ((new Date(booking.end_date).getTime() -
-        new Date(booking.start_date).getTime()) /
-        (1000 * 3600 * 24)) *
-      booking.daily_value
-    ).toLocaleString("pt-br", { style: "currency", currency: "BRL" });
 
   const getTotalMissingValue = () =>
     (
@@ -192,7 +185,9 @@ export default function RoomCard(props) {
                   De {new Date(booking.start_date).toLocaleDateString()} à{" "}
                   {new Date(booking.end_date).toLocaleDateString("pt-br")}
                 </Typography>
-                <Typography>Valor total: {getTotalBookingValue()}</Typography>
+                <Typography>
+                  Valor total: {getTotalBookingValue(booking)}
+                </Typography>
               </div>
             )}
             {roomStatus === "occupied" && (

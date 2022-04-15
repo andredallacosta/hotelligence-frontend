@@ -1,5 +1,4 @@
 import axios from "@Utils/api/http";
-
 import api from "@Utils/api";
 import { request, success, failure } from "Redux@Helpers";
 import { authConstants } from "Redux@Constants";
@@ -19,12 +18,16 @@ function Login(data) {
         })
         .catch(() => {
           localStorage.removeItem("token");
+
           dispatch(
             failure(authConstants.LOGIN_FAILURE, "error", {
               title: "Erro",
               msg: "Sessão expirada!",
             })
           );
+          setTimeout(() => {
+            window.location.pathname = "/login";
+          }, 2000);
         });
     } else {
       api.auth

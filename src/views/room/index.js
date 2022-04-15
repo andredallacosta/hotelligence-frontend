@@ -15,9 +15,11 @@ import {
 import DateFnsUtils from "@date-io/date-fns";
 import brLocale from "date-fns/locale/pt-BR";
 
-import { Button, Layout } from "@Components/UI";
+import { Button, Layout, Modal } from "@Components/UI";
+import { RoomForm } from "@Components/forms";
 import { appActions } from "Redux@Actions";
 import api from "@Utils/api";
+import { getTotalBookingValue } from "@Utils/helpers";
 import { failure } from "Redux@Helpers";
 import RoomCard from "./components/RoomCard";
 import useStyles from "./styles";
@@ -35,6 +37,14 @@ export default function Room() {
 
   const [room, setRoom] = useState({});
   const [loading, setLoading] = useState(true);
+  const [roomModal, setRoomModal] = useState(false);
+
+  const booking = room.bookings?.find(
+    (b) =>
+      selectedDate >= new Date(b.start_date) &&
+      selectedDate <= new Date(b.end_date) &&
+      b.check_out === false
+  );
 
   const getRoom = () => {
     setLoading(true);
@@ -108,6 +118,15 @@ export default function Room() {
                 Capacidade: {room.type?.capacity}
               </Typography>
               <Typography className={classes.text}>
+                Valor:{" "}
+                {booking
+                  ? getTotalBookingValue(booking)
+                  : room.value.toLocaleString("pt-br", {
+                      style: "currency",
+                      currency: "BRL",
+                    })}
+              </Typography>
+              <Typography className={classes.text}>
                 Quantidade de camas de casal: {room.type?.double_bed_quantity}
               </Typography>
               <Typography className={classes.text}>
@@ -162,13 +181,13 @@ export default function Room() {
               <RoomCard room={room} getRoom={() => getRoom()} />
               <div className={classes.buttonsDiv}>
                 <Button
-                  label="Excluir"
+                  label="Excluir Quarto"
                   onClick={() => deleteRoom()}
                   className={classes.button}
                 />
                 <Button
-                  label="Editar"
-                  onClick={() => deleteRoom()}
+                  label="Editar Quarto"
+                  onClick={() => setRoomModal(true)}
                   className={classes.button}
                 />
               </div>
@@ -176,6 +195,24 @@ export default function Room() {
           </Grid>
         )}
       </Container>
+      <Modal
+        title="Editar Quarto"
+        body={
+          <RoomForm
+            room={room}
+            onSuccess={() => {
+              setRoomModal(false);
+              getRoom();
+            }}
+          />
+        }
+        open={roomModal}
+        onClose={() => {
+          setRoomModal(false);
+        }}
+        showAcceptButton={false}
+        showCancelButton={false}
+      />
     </Layout>
   );
 }

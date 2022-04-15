@@ -1,7 +1,7 @@
-import { createMuiTheme } from "@material-ui/core/styles";
+import { createTheme } from "@material-ui/core/styles";
 import { ptBR } from "@material-ui/core/locale";
 
-export const light = createMuiTheme(
+export const light = createTheme(
   {
     palette: {
       common: {

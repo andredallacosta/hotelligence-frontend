@@ -31,6 +31,10 @@ const useStyles = makeStyles((theme) => ({
   paper: {
     padding: theme.spacing(2),
   },
+  addRoomIcon: {
+    fontSize: "60px",
+    color: "#1c1c1c",
+  },
 }));
 
 export default useStyles;
