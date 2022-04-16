@@ -3,35 +3,35 @@ import axios from "./http";
 export default {
   list() {
     return axios
-      .get("booking")
+      .get("guest")
       .then((response) => Promise.resolve(response))
       .catch((error) => Promise.reject(error));
   },
 
   create(data) {
     return axios
-      .post("booking", data)
+      .post("guest", data)
       .then((response) => Promise.resolve(response))
       .catch((error) => Promise.reject(error));
   },
 
   retrieve(id) {
     return axios
-      .get(`booking/${id}`)
+      .get(`guest/${id}`)
       .then((response) => Promise.resolve(response))
       .catch((error) => Promise.reject(error));
   },
 
   update(data) {
     return axios
-      .put(`booking/${data.id}`, data)
+      .put(`guest/${data.id}`, data)
       .then((response) => Promise.resolve(response))
       .catch((error) => Promise.reject(error));
   },
 
   delete(id) {
     return axios
-      .delete(`booking/${id}`)
+      .delete(`guest/${id}`)
       .then((response) => Promise.resolve(response))
       .catch((error) => Promise.reject(error));
   },

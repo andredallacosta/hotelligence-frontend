@@ -23,13 +23,14 @@ export default function RoomTypeForm(props) {
 
   const [loading, setLoading] = useState(false);
 
-  const { handleSubmit, errors, control } = useForm({
+  const { handleSubmit, errors, control, clearErrors } = useForm({
     defaultValues: {
       ...roomType,
     },
   });
 
   const saveRoomType = (formData) => {
+    setLoading(true);
     const obj = {
       ...roomType,
       ...formData,
@@ -64,7 +65,7 @@ export default function RoomTypeForm(props) {
           dispatch(
             failure("", "error", {
               title: "Erro",
-              msg: "Não foi possível criar o tipo de quart",
+              msg: "Não foi possível criar o tipo de quarto",
             })
           );
         });
@@ -72,7 +73,15 @@ export default function RoomTypeForm(props) {
   };
 
   return (
-    <form onSubmit={handleSubmit(saveRoomType)} noValidate>
+    <form
+      onSubmit={(event) => {
+        event.preventDefault();
+        clearErrors();
+        handleSubmit(saveRoomType)();
+        event.stopPropagation();
+      }}
+      noValidate
+    >
       <Grid container justifyContent="flex-start" spacing={2}>
         <Grid item xs={12}>
           <Controller

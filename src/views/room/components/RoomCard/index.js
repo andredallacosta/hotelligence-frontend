@@ -9,7 +9,8 @@ import {
   Typography,
 } from "@material-ui/core";
 
-import { RoomStatus, Button } from "@Components/UI";
+import { RoomStatus, Button, Modal } from "@Components/UI";
+import { BookingForm } from "@Components/forms";
 import { failure } from "Redux@Helpers";
 import api from "@Utils/api";
 import { getTotalBookingValue } from "@Utils/helpers";
@@ -21,6 +22,8 @@ export default function RoomCard(props) {
   const dispatch = useDispatch();
 
   const [loading, setLoading] = useState(false);
+  const [bookingModal, setBookingModal] = useState(false);
+  const [checkIn, setCheckIn] = useState(false);
 
   const { selectedDate } = useSelector(
     (state) => state.platform.app,
@@ -208,12 +211,15 @@ export default function RoomCard(props) {
                 <Button
                   label="Check-in"
                   className={classes.actionButton}
-                  onClick={() => {}}
+                  onClick={() => {
+                    setCheckIn(true);
+                    setBookingModal(true);
+                  }}
                 />
                 <Button
                   label="Reservar"
                   className={classes.actionButton}
-                  onClick={() => {}}
+                  onClick={() => setBookingModal(true)}
                 />
                 <Button
                   label="Manutenção"
@@ -227,12 +233,15 @@ export default function RoomCard(props) {
                 <Button
                   label="Check-in"
                   className={classes.actionButton}
-                  onClick={() => {}}
+                  onClick={() => {
+                    setCheckIn(true);
+                    setBookingModal(true);
+                  }}
                 />
                 <Button
                   label="Editar"
                   className={classes.actionButton}
-                  onClick={() => {}}
+                  onClick={() => setBookingModal(true)}
                 />
                 <Button
                   label="Remover"
@@ -266,6 +275,49 @@ export default function RoomCard(props) {
           </CardActions>
         </>
       )}
+      {/* <Modal
+        title="Check-in"
+        body={
+          <BookingForm
+            room={room}
+            onSuccess={() => {
+              setRoomModal(false);
+              getRoom();
+            }}
+          />
+        }
+        width="40%"
+        open={roomModal}
+        onClose={() => {
+          setRoomModal(false);
+        }}
+        showAcceptButton={false}
+        showCancelButton={false}
+      /> */}
+      <Modal
+        title={`${
+          checkIn ? "Check-in" : booking ? "Editar Reserva" : "Reservar"
+        }`}
+        body={
+          <BookingForm
+            room={room}
+            booking={booking || {}}
+            checkIn={checkIn}
+            onSuccess={() => {
+              setBookingModal(false);
+              setCheckIn(false);
+              getRoom();
+            }}
+          />
+        }
+        width="40%"
+        open={bookingModal}
+        onClose={() => {
+          setBookingModal(false);
+        }}
+        showAcceptButton={false}
+        showCancelButton={false}
+      />
     </Card>
   );
 }

@@ -151,7 +151,15 @@ export default function RoomForm(props) {
               required: "Este campo é obrigatório",
             }}
             as={
-              <TextField variant="outlined" label="Valor" required fullWidth />
+              <TextField
+                variant="outlined"
+                label="Valor"
+                required
+                fullWidth
+                InputProps={{
+                  startAdornment: "R$",
+                }}
+              />
             }
             error={!!errors.value}
             helperText={errors.value?.message || false}
