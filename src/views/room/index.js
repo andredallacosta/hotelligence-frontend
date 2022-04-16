@@ -206,6 +206,7 @@ export default function Room() {
             }}
           />
         }
+        width="40%"
         open={roomModal}
         onClose={() => {
           setRoomModal(false);

@@ -8,6 +8,13 @@ export default {
       .catch((error) => Promise.reject(error));
   },
 
+  create(data) {
+    return axios
+      .post("room_type", data)
+      .then((response) => Promise.resolve(response))
+      .catch((error) => Promise.reject(error));
+  },
+
   retrieve(id) {
     return axios
       .get(`room_type/${id}`)

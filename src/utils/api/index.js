@@ -4,7 +4,7 @@ import hotel from "./hotel";
 import booking from "./booking";
 import roomType from "./roomType";
 
-const api = {
+export const api = {
   auth,
   room,
   hotel,

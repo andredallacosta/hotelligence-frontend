@@ -167,11 +167,6 @@ const useStyles = makeStyles((theme) => ({
     justifyContent: "center",
     alignItems: "center",
   },
-  buttonContainer: {
-    display: "flex",
-    justifyContent: "flex-start",
-    alignItems: "center",
-  },
 }));
 
 export default useStyles;

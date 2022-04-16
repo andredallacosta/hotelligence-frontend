@@ -10,9 +10,12 @@ import {
   InputLabel,
   Select,
   MenuItem,
+  IconButton,
 } from "@material-ui/core/";
+import { AddCircleOutline, Edit, Delete } from "@material-ui/icons";
 
-import { ButtonLoading } from "@Components/UI";
+import { ButtonLoading, Modal } from "@Components/UI";
+import { RoomTypeForm } from "@Components/forms";
 import api from "@Utils/api";
 import { failure } from "Redux@Helpers";
 import useStyles from "./styles";
@@ -24,10 +27,12 @@ export default function RoomForm(props) {
 
   const [loading, setLoading] = useState(false);
   const [roomTypes, setRoomTypes] = useState([]);
+  const [roomTypeForm, setRoomTypeForm] = useState(false);
+  const [roomTypeToEdit, setRoomTypeToEdit] = useState(null);
 
   const { hotel } = useSelector((state) => state.platform.hotel, shallowEqual);
 
-  const { handleSubmit, errors, control } = useForm({
+  const { handleSubmit, errors, control, getValues, setValue } = useForm({
     defaultValues: {
       ...room,
       type: room.type?.id || "",
@@ -35,6 +40,7 @@ export default function RoomForm(props) {
   });
 
   const saveRoom = (formData) => {
+    setLoading(true);
     const obj = {
       ...room,
       ...formData,
@@ -97,6 +103,26 @@ export default function RoomForm(props) {
       });
   };
 
+  const deleteRoomType = () => {
+    setLoading(true);
+    api.roomType
+      .delete(getValues()?.type)
+      .then(() => {
+        getRoomTypes();
+        setValue("type", "");
+        setLoading(false);
+      })
+      .catch(() => {
+        setLoading(false);
+        dispatch(
+          failure("", "error", {
+            title: "Erro",
+            msg: "Não foi possível excluir o tipo de quarto",
+          })
+        );
+      });
+  };
+
   useEffect(() => {
     getRoomTypes();
   }, []);
@@ -135,14 +161,14 @@ export default function RoomForm(props) {
             type="number"
           />
         </Grid>
-        <Grid item xs={12}>
+        <Grid item xs={8} lg={9} xl={10}>
           <FormControl
-            fullWidth
             variant="outlined"
             className={classes.formControl}
             required
             disabled={loading}
             error={!!errors.type}
+            fullWidth
           >
             <InputLabel id="status">Tipo de Quarto</InputLabel>
             <Controller
@@ -175,6 +201,25 @@ export default function RoomForm(props) {
             ) : null}
           </FormControl>
         </Grid>
+        <Grid item xs={4} lg={3} xl={2} className={classes.buttonContainer}>
+          <IconButton onClick={() => setRoomTypeForm(true)} size="small">
+            <AddCircleOutline />
+          </IconButton>
+          <IconButton onClick={() => deleteRoomType()} size="small">
+            <Delete />
+          </IconButton>
+          <IconButton
+            size="small"
+            onClick={() => {
+              setRoomTypeToEdit(
+                roomTypes.find((r) => getValues()?.type === r.id)
+              );
+              setRoomTypeForm(true);
+            }}
+          >
+            <Edit />
+          </IconButton>
+        </Grid>
         <Grid item xs={12} className={classes.submitButtonGrid}>
           <ButtonLoading
             loading={loading}
@@ -187,6 +232,31 @@ export default function RoomForm(props) {
           </ButtonLoading>
         </Grid>
       </Grid>
+
+      <Modal
+        title={`${roomTypeToEdit ? "Editar" : "Adicionar"} Tipo de Quarto`}
+        body={
+          <RoomTypeForm
+            roomType={roomTypeToEdit || {}}
+            onSuccess={() => {
+              setRoomTypeForm(false);
+              getRoomTypes();
+              if (roomTypeToEdit) {
+                setRoomTypeToEdit(null);
+              }
+            }}
+          />
+        }
+        open={roomTypeForm}
+        onClose={() => {
+          setRoomTypeForm(false);
+          if (roomTypeToEdit) {
+            setRoomTypeToEdit(null);
+          }
+        }}
+        showAcceptButton={false}
+        showCancelButton={false}
+      />
     </form>
   );
 }

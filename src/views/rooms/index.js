@@ -43,7 +43,7 @@ export default function Rooms() {
     api.room
       .list({ date: selectedDate })
       .then((response) => {
-        setRooms(response.data);
+        setRooms(response.data.sort((a, b) => a.number - b.number));
         setLoading(false);
       })
       .catch(() => {
@@ -104,6 +104,7 @@ export default function Rooms() {
             }}
           />
         }
+        width="40%"
         open={roomModal}
         onClose={() => {
           setRoomModal(false);

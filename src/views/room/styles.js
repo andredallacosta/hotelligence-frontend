@@ -46,7 +46,10 @@ const useStyles = makeStyles((theme) => ({
     display: "flex",
     justifyContent: "space-around",
     alignItems: "center",
-    width: "60%",
+    width: "100%",
+    [theme.breakpoints.up("sm")]: {
+      width: "60%",
+    },
   },
   datePicker: {
     width: "60%",
