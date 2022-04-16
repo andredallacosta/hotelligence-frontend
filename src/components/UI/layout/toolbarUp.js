@@ -1,9 +1,8 @@
 /* eslint-disable react/prop-types */
 import React from "react";
+import { NavLink } from "react-router-dom";
 import { makeStyles } from "@material-ui/core/styles";
-import { Toolbar, IconButton, Box } from "@material-ui/core";
-import { Menu as MenuIcon } from "@material-ui/icons";
-import LeftSideBar from "./LSideBar";
+import { Toolbar, Button, Box } from "@material-ui/core";
 
 const useStyles = makeStyles((theme) => ({
   menuButton: {
@@ -13,28 +12,54 @@ const useStyles = makeStyles((theme) => ({
     width: "100%",
     alignItems: "center",
   },
+  linkActive: {
+    background: theme.palette.primary.dark,
+  },
 }));
 
 export default function Tbar({ ...props }) {
   const classes = useStyles();
   const { className } = props;
-  const { handleSideBar, openSide } = props;
 
   return (
     <Toolbar className={className} variant="dense">
       <Box display="flex" justifyContent="center" className={classes.box}>
-        <Box flexGrow={1}>
-          <IconButton
-            onClick={handleSideBar}
-            edge="start"
-            className={classes.menuButton}
-            color="inherit"
-            aria-label="menu"
-          >
-            <MenuIcon />
-          </IconButton>
-          <LeftSideBar open={openSide} onChange={handleSideBar} />
-        </Box>
+        <Button
+          color="inherit"
+          disableRipple
+          component={NavLink}
+          to="/clientes"
+          exact
+          onClick={() => {}}
+          className={classes.menuItem}
+          activeClassName={classes.linkActive}
+        >
+          Clientes
+        </Button>
+        <Button
+          color="inherit"
+          disableRipple
+          component={NavLink}
+          to="/hotelaria"
+          exact
+          onClick={() => {}}
+          className={classes.menuItem}
+          activeClassName={classes.linkActive}
+        >
+          Hotelaria
+        </Button>
+        <Button
+          color="inherit"
+          disableRipple
+          component={NavLink}
+          to="/financeiro"
+          exact
+          onClick={() => {}}
+          className={classes.menuItem}
+          activeClassName={classes.linkActive}
+        >
+          Financeiro
+        </Button>
       </Box>
     </Toolbar>
   );
