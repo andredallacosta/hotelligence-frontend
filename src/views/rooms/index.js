@@ -81,11 +81,11 @@ export default function Rooms() {
         ) : (
           <Grid container spacing={2} className={classes.cardsContainer}>
             {rooms.map((room) => (
-              <Grid item xs={6} md={3} lg={2} key={`room: ${room.number}`}>
+              <Grid item xs={6} md={3} lg={3} key={`room: ${room.number}`}>
                 <RoomCard data={room} selectedDate={selectedDate} />
               </Grid>
             ))}
-            <Grid item xs={6} md={3} lg={2}>
+            <Grid item xs={6} md={3} lg={3}>
               <IconButton onClick={() => setRoomModal(true)}>
                 <AddCircleOutline classes={{ root: classes.addRoomIcon }} />
               </IconButton>

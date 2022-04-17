@@ -18,7 +18,7 @@ const useStyles = makeStyles((theme) => ({
   datePicker: {
     margin: "50px 0px 80px 0px",
     [theme.breakpoints.up("md")]: {
-      margin: "100px 0px 150px 0px",
+      margin: "50px 0px 50px 0px",
     },
     display: "flex",
     justifyContent: "center",

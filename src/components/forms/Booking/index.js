@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector, shallowEqual } from "react-redux";
 import { useForm, Controller } from "react-hook-form";
 import {
   Grid,
@@ -30,6 +30,11 @@ export default function BookingForm(props) {
   const [loading, setLoading] = useState(false);
   const [guests, setGuests] = useState([]);
 
+  const { selectedDate } = useSelector(
+    (state) => state.platform.app,
+    shallowEqual
+  );
+
   const {
     handleSubmit,
     errors,
@@ -41,19 +46,20 @@ export default function BookingForm(props) {
   } = useForm({
     defaultValues: {
       ...booking,
-      start_date: booking?.start_date || new Date(),
+      start_date: booking?.start_date || selectedDate || new Date(),
       end_date:
-        booking?.end_date || new Date().setDate(new Date().getDate() + 1),
+        booking?.end_date ||
+        (selectedDate
+          ? new Date(selectedDate).setDate(new Date(selectedDate).getDate() + 1)
+          : new Date().setDate(new Date().getDate() + 1)),
       extras_value: booking?.extras_value || 0,
+      daily_value: room?.value || 0,
     },
   });
 
-  const watchStartDate = watch("start_date", new Date());
-  const watchEndDate = watch(
-    "end_date",
-    new Date().setDate(new Date().getDate() + 1)
-  );
-  const watchDailyValue = watch("daily_value", 0);
+  const watchStartDate = watch("start_date");
+  const watchEndDate = watch("end_date");
+  const watchDailyValue = watch("daily_value");
   const watchExtrasValue = watch("extras_value", 0);
 
   const saveBooking = (formData) => {
@@ -72,8 +78,8 @@ export default function BookingForm(props) {
       room: room?.id,
       guest: formData.guest.id,
       check_in: checkIn,
-      start_date: new Date(formData.start_date).toLocaleDateString("en-CA"),
-      end_date: new Date(formData.end_date).toLocaleDateString("en-CA"),
+      start_date: new Date(formData.start_date),
+      end_date: new Date(formData.end_date),
       checkIn,
     };
     if (booking?.id) {
@@ -123,7 +129,7 @@ export default function BookingForm(props) {
         if (booking?.guest) {
           setValue(
             "guest",
-            response.data.find((guest) => booking?.guest === guest.id)
+            response.data.find((guest) => booking?.guest.id === guest.id)
           );
         }
       })
@@ -346,7 +352,6 @@ export default function BookingForm(props) {
             disabled={loading}
             name="daily_value"
             type="number"
-            defaultValue={0}
           />
         </Grid>
         <Grid item xs={6}>

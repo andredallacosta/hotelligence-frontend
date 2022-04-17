@@ -29,7 +29,6 @@ export default function Tbar({ ...props }) {
           disableRipple
           component={NavLink}
           to="/clientes"
-          exact
           onClick={() => {}}
           className={classes.menuItem}
           activeClassName={classes.linkActive}
@@ -41,7 +40,6 @@ export default function Tbar({ ...props }) {
           disableRipple
           component={NavLink}
           to="/hotelaria"
-          exact
           onClick={() => {}}
           className={classes.menuItem}
           activeClassName={classes.linkActive}
@@ -53,7 +51,6 @@ export default function Tbar({ ...props }) {
           disableRipple
           component={NavLink}
           to="/financeiro"
-          exact
           onClick={() => {}}
           className={classes.menuItem}
           activeClassName={classes.linkActive}

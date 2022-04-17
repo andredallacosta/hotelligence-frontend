@@ -5,7 +5,6 @@ import { useHistory } from "react-router-dom";
 import { useSelector, shallowEqual } from "react-redux";
 
 import { RoomStatus } from "@Components/UI";
-import { getTotalBookingValue } from "@Utils/helpers";
 import useStyles from "./styles";
 
 export default function RoomCard(props) {
@@ -33,15 +32,21 @@ export default function RoomCard(props) {
       <CardContent className={classes.content}>
         <Typography align="left">Número: {data.number}</Typography>
         <Typography align="left">Tipo: {data.type?.type}</Typography>
-        <Typography align="left">Capacidade: {data.type?.capacity}</Typography>
+        {booking?.guest ? (
+          <Typography align="left">
+            Hóspede: {booking.guest?.full_name}
+          </Typography>
+        ) : (
+          <Typography align="left">
+            Capacidade: {data.type?.capacity}
+          </Typography>
+        )}
         <Typography align="left">
           Valor:{" "}
-          {booking
-            ? getTotalBookingValue(booking)
-            : data.value.toLocaleString("pt-br", {
-                style: "currency",
-                currency: "BRL",
-              })}
+          {data.value.toLocaleString("pt-br", {
+            style: "currency",
+            currency: "BRL",
+          })}
         </Typography>
         <RoomStatus data={data} />
       </CardContent>

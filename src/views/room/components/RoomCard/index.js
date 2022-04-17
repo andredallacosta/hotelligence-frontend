@@ -24,6 +24,7 @@ export default function RoomCard(props) {
   const [loading, setLoading] = useState(false);
   const [bookingModal, setBookingModal] = useState(false);
   const [checkIn, setCheckIn] = useState(false);
+  const [confirmCheckout, setConfirmCheckout] = useState(false);
 
   const { selectedDate } = useSelector(
     (state) => state.platform.app,
@@ -57,19 +58,19 @@ export default function RoomCard(props) {
   });
 
   const getTotalMissingValue = () =>
-    (
-      ((new Date(booking.end_date).getTime() -
-        new Date(booking.start_date).getTime()) /
-        (1000 * 3600 * 24)) *
-        booking.daily_value +
-      booking.extras_value -
-      booking.paid_value
-    ).toLocaleString("pt-br", { style: "currency", currency: "BRL" });
+    booking
+      ? ((new Date(booking.end_date).getTime() -
+          new Date(booking.start_date).getTime()) /
+          (1000 * 3600 * 24)) *
+          booking.daily_value +
+        booking.extras_value -
+        booking.paid_value
+      : 0;
 
   const checkoutRoom = () => {
     setLoading(true);
     api.booking
-      .update({ ...booking, check_out: true })
+      .update({ ...booking, check_out: true, guest: booking.guest.id })
       .then(() => {
         api.room
           .update({
@@ -185,9 +186,13 @@ export default function RoomCard(props) {
             {roomStatus === "booked" && (
               <div className={classes.info}>
                 <Typography>
-                  De {new Date(booking.start_date).toLocaleDateString()} à{" "}
-                  {new Date(booking.end_date).toLocaleDateString("pt-br")}
+                  De{" "}
+                  {new Date(booking.start_date).toLocaleDateString("pt-br", {
+                    timeZone: "America/Sao_Paulo",
+                  })}{" "}
+                  à {new Date(booking.end_date).toLocaleDateString("pt-br")}
                 </Typography>
+                <Typography>Hóspede: {booking.guest?.full_name}</Typography>
                 <Typography>
                   Valor total: {getTotalBookingValue(booking)}
                 </Typography>
@@ -196,11 +201,19 @@ export default function RoomCard(props) {
             {roomStatus === "occupied" && (
               <div className={classes.info}>
                 <Typography>
-                  De {new Date(booking.start_date).toLocaleDateString()} à{" "}
-                  {new Date(booking.end_date).toLocaleDateString("pt-br")}
+                  De {new Date(booking.start_date).toLocaleDateString("pt-br")}{" "}
+                  à {new Date(booking.end_date).toLocaleDateString("pt-br")}
+                </Typography>
+                <Typography>Hóspede: {booking.guest?.full_name}</Typography>
+                <Typography>
+                  Valor total: {getTotalBookingValue(booking)}
                 </Typography>
                 <Typography>
-                  Valor total restante: {getTotalMissingValue()}
+                  Valor total restante:{" "}
+                  {getTotalMissingValue()?.toLocaleString("pt-br", {
+                    style: "currency",
+                    currency: "BRL",
+                  })}
                 </Typography>
               </div>
             )}
@@ -255,12 +268,18 @@ export default function RoomCard(props) {
                 <Button
                   label="Check-out"
                   className={classes.actionButton}
-                  onClick={() => checkoutRoom()}
+                  onClick={() => {
+                    if (getTotalMissingValue() > 0) {
+                      setConfirmCheckout(true);
+                    } else {
+                      checkoutRoom();
+                    }
+                  }}
                 />
                 <Button
                   label="Editar"
                   className={classes.actionButton}
-                  onClick={() => {}}
+                  onClick={() => setBookingModal(true)}
                 />
               </>
             )}
@@ -275,25 +294,6 @@ export default function RoomCard(props) {
           </CardActions>
         </>
       )}
-      {/* <Modal
-        title="Check-in"
-        body={
-          <BookingForm
-            room={room}
-            onSuccess={() => {
-              setRoomModal(false);
-              getRoom();
-            }}
-          />
-        }
-        width="40%"
-        open={roomModal}
-        onClose={() => {
-          setRoomModal(false);
-        }}
-        showAcceptButton={false}
-        showCancelButton={false}
-      /> */}
       <Modal
         title={`${
           checkIn ? "Check-in" : booking ? "Editar Reserva" : "Reservar"
@@ -302,7 +302,7 @@ export default function RoomCard(props) {
           <BookingForm
             room={room}
             booking={booking || {}}
-            checkIn={checkIn}
+            checkIn={checkIn || booking?.check_in}
             onSuccess={() => {
               setBookingModal(false);
               setCheckIn(false);
@@ -317,6 +317,30 @@ export default function RoomCard(props) {
         }}
         showAcceptButton={false}
         showCancelButton={false}
+      />
+      <Modal
+        title="Tem certeza que deseja fazer o check-out?"
+        body={`O valor total restante é de ${getTotalMissingValue()?.toLocaleString(
+          "pt-br",
+          {
+            style: "currency",
+            currency: "BRL",
+          }
+        )}`}
+        width="40%"
+        open={confirmCheckout}
+        onAccept={() => {
+          checkoutRoom();
+          setConfirmCheckout(false);
+        }}
+        onClose={() => {
+          setConfirmCheckout(false);
+        }}
+        onCancel={() => {
+          setConfirmCheckout(false);
+        }}
+        showAcceptButton
+        showCancelButton
       />
     </Card>
   );
