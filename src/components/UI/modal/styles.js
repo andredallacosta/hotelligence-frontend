@@ -38,7 +38,10 @@ const useStyles = makeStyles((theme) => ({
       padding: "24px",
       height: "fit-content",
       maxHeight: "95vh",
-      maxWidth: (props) => props.width || "400px",
+      maxWidth: "100%",
+      [theme.breakpoints.up("md")]: {
+        maxWidth: (props) => props.width || "400px",
+      },
       borderRadius: "10px",
     },
   },

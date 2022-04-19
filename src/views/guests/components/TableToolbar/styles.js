@@ -1,11 +1,15 @@
 import { makeStyles } from "@material-ui/core/styles";
 
 const useStyles = makeStyles((theme) => ({
+  root: {
+    display: "flex",
+    justifyContent: "space-between",
+    alignItems: "center",
+  },
   defaultButton: {
     cursor: "pointer",
     minWidth: "100px",
     backgroundColor: theme.palette.primary.main,
-    borderRadius: 100,
     textTransform: "none",
 
     display: "flex",
@@ -21,16 +25,6 @@ const useStyles = makeStyles((theme) => ({
       backgroundColor: theme.palette.primary.dark,
       transition: "0.3s",
     },
-  },
-  submitButtonGrid: {
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  buttonContainer: {
-    display: "flex",
-    justifyContent: "flex-start",
-    alignItems: "center",
   },
 }));
 

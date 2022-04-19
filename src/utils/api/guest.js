@@ -35,4 +35,11 @@ export default {
       .then((response) => Promise.resolve(response))
       .catch((error) => Promise.reject(error));
   },
+
+  check(email) {
+    return axios
+      .get(`guest/check?email=${email}`)
+      .then((response) => Promise.resolve(response))
+      .catch((error) => Promise.reject(error));
+  },
 };
