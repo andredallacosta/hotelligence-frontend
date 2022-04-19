@@ -172,7 +172,6 @@ export default function RoomForm(props) {
         <Grid item xs={8} lg={9} xl={10}>
           <FormControl
             variant="outlined"
-            className={classes.formControl}
             required
             disabled={loading}
             error={!!errors.type}
