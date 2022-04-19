@@ -63,7 +63,7 @@ export default function BookingForm(props) {
   const watchExtrasValue = watch("extras_value", 0);
 
   const saveBooking = (formData) => {
-    if (formData.start_date > formData.end_date) {
+    if (new Date(formData.start_date) > new Date(formData.end_date)) {
       setError("startDateLessThanEndData", {
         type: "manual",
         message: "A data de entrada precisa ser menor que a data de saída",
