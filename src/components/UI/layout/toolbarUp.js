@@ -12,8 +12,16 @@ const useStyles = makeStyles((theme) => ({
     width: "100%",
     alignItems: "center",
   },
+  menuItem: {
+    "&.Mui-disabled": {
+      color: "#ccc",
+    },
+  },
   linkActive: {
     background: theme.palette.primary.dark,
+    "&:hover": {
+      background: theme.palette.primary.dark,
+    },
   },
 }));
 
@@ -49,10 +57,12 @@ export default function Tbar({ ...props }) {
         <Button
           color="inherit"
           disableRipple
+          disabled
           component={NavLink}
           to="/financeiro"
           onClick={() => {}}
           className={classes.menuItem}
+          classes={{ disabled: classes.disabled }}
           activeClassName={classes.linkActive}
         >
           Financeiro

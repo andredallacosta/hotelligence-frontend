@@ -95,7 +95,6 @@ export default function RoomTypeForm(props) {
             disabled={loading}
             name="type"
             type="text"
-            onWheel={(e) => e.target.blur()}
           />
         </Grid>
         <Grid item xs={12}>
@@ -117,6 +116,7 @@ export default function RoomTypeForm(props) {
             disabled={loading}
             name="capacity"
             type="number"
+            onWheel={(e) => e.target.blur()}
           />
         </Grid>
         <Grid item xs={12}>
@@ -139,6 +139,7 @@ export default function RoomTypeForm(props) {
             name="double_bed_quantity"
             type="number"
             defaultValue={0}
+            onWheel={(e) => e.target.blur()}
           />
         </Grid>
         <Grid item xs={12}>
@@ -161,6 +162,7 @@ export default function RoomTypeForm(props) {
             name="single_bed_quantity"
             type="number"
             defaultValue={0}
+            onWheel={(e) => e.target.blur()}
           />
         </Grid>
         <Grid item xs={12}>
@@ -183,6 +185,7 @@ export default function RoomTypeForm(props) {
             name="bathroom_quantity"
             type="number"
             defaultValue={0}
+            onWheel={(e) => e.target.blur()}
           />
         </Grid>
 

@@ -14,7 +14,7 @@ import { light as ThemeLight } from "@Utils";
 import { store } from "Redux@Helpers";
 import { Dialog } from "@Components/UI";
 import { hotelActions, authActions } from "Redux@Actions";
-import { LoginPage, RoomsPage, RoomPage } from "@Views";
+import { LoginPage, RoomsPage, RoomPage, GuestsPage } from "@Views";
 
 const useStyles = makeStyles((theme) => ({
   globalStyle: {
@@ -99,7 +99,7 @@ function AppContainer() {
           <Route exact path="/login" component={LoginPage} />
           <LoggedRoute exact path="/hotelaria" component={RoomsPage} />
           <LoggedRoute exact path="/hotelaria/:id" component={RoomPage} />
-          {/* <Route exact path="/clientes" component={HomePage} /> */}
+          <LoggedRoute exact path="/clientes" component={GuestsPage} />
           {/* <Route exact path="/clientes/:id" component={HomePage} /> */}
           {/* <Route exact path="/financeiro" component={HomePage} /> */}
           {/* <Route exact path="/hotelaria/caixa" component={HomePage} /> */}

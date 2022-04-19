@@ -159,12 +159,7 @@ export default function BookingForm(props) {
     >
       <Grid container justifyContent="flex-start" spacing={2}>
         <Grid item xs={12}>
-          <FormControl
-            variant="outlined"
-            className={classes.formControl}
-            fullWidth
-            error={!!errors.guest}
-          >
+          <FormControl variant="outlined" fullWidth error={!!errors.guest}>
             <Controller
               rules={{ required: "Este campo é obrigatório" }}
               control={control}
@@ -208,7 +203,6 @@ export default function BookingForm(props) {
           <FormControl
             fullWidth
             variant="outlined"
-            className={classes.formControl}
             required
             error={!!errors.start_date}
           >
@@ -255,7 +249,6 @@ export default function BookingForm(props) {
           <FormControl
             fullWidth
             variant="outlined"
-            className={classes.formControl}
             required
             error={!!errors.end_date}
           >
