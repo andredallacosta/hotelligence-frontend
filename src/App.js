@@ -14,7 +14,7 @@ import { light as ThemeLight } from "@Utils";
 import { store } from "Redux@Helpers";
 import { Dialog } from "@Components/UI";
 import { hotelActions, authActions } from "Redux@Actions";
-import { LoginPage, RoomsPage, RoomPage, GuestsPage } from "@Views";
+import { LoginPage, RoomsPage, RoomPage, GuestsPage, GuestPage } from "@Views";
 
 const useStyles = makeStyles((theme) => ({
   globalStyle: {
@@ -100,9 +100,9 @@ function AppContainer() {
           <LoggedRoute exact path="/hotelaria" component={RoomsPage} />
           <LoggedRoute exact path="/hotelaria/:id" component={RoomPage} />
           <LoggedRoute exact path="/clientes" component={GuestsPage} />
-          {/* <Route exact path="/clientes/:id" component={HomePage} /> */}
-          {/* <Route exact path="/financeiro" component={HomePage} /> */}
-          {/* <Route exact path="/hotelaria/caixa" component={HomePage} /> */}
+          <LoggedRoute exact path="/clientes/:id" component={GuestPage} />
+          {/* <LoggedRoute exact path="/financeiro" component={HomePage} /> */}
+          {/* <LoggedRoute exact path="/hotelaria/caixa" component={HomePage} /> */}
         </Switch>
       </Router>
       <Dialog

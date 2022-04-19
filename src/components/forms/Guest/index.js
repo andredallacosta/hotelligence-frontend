@@ -388,7 +388,7 @@ export default function BookingForm(props) {
             name="country"
             type="text"
             placeholder="País"
-            defaultValue=""
+            defaultValue="Brasil"
           />
         </Grid>
         <Grid item xs={12} md={6}>

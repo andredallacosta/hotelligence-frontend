@@ -199,7 +199,7 @@ export default function Guests() {
             }}
           />
         }
-        width="50%"
+        width="40%"
         open={guestForm}
         onClose={() => {
           setGuestOnFocus(null);
