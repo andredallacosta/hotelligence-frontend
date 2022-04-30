@@ -41,6 +41,7 @@ export const AppContext = React.createContext(AppConstantsDefault);
 function LoggedRoute({ path, component, exact }) {
   const history = useHistory();
   const dispatch = useDispatch();
+
   const { loggedIn, user } = useSelector(
     (state) => state.security.auth,
     shallowEqual
