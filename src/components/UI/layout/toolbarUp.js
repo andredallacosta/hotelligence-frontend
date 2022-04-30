@@ -1,8 +1,27 @@
 /* eslint-disable react/prop-types */
-import React from "react";
-import { NavLink } from "react-router-dom";
+import React, { useState } from "react";
+import { NavLink, useHistory } from "react-router-dom";
+import { useSelector, shallowEqual, useDispatch } from "react-redux";
 import { makeStyles } from "@material-ui/core/styles";
-import { Toolbar, Button, Box } from "@material-ui/core";
+import {
+  Toolbar,
+  Button,
+  Box,
+  // Typography,
+  Popper,
+  Grow,
+  Paper,
+  ClickAwayListener,
+  MenuList,
+  MenuItem,
+  ListItemIcon,
+  ListItemText,
+  Icon,
+  Avatar,
+} from "@material-ui/core";
+import { ExpandMore } from "@material-ui/icons";
+
+import { authActions } from "Redux@Actions";
 
 const useStyles = makeStyles((theme) => ({
   menuButton: {
@@ -26,8 +45,23 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function Tbar({ ...props }) {
-  const classes = useStyles();
   const { className } = props;
+  const classes = useStyles();
+  const dispatch = useDispatch();
+  const history = useHistory();
+
+  const { user } = useSelector((state) => state.security.auth, shallowEqual);
+
+  const [anchorEl, setAnchorEl] = useState(null);
+  const open = Boolean(anchorEl);
+
+  const toggle = (event) => {
+    if (anchorEl) {
+      setAnchorEl(null);
+    } else {
+      setAnchorEl(event.currentTarget);
+    }
+  };
 
   return (
     <Toolbar className={className} variant="dense">
@@ -67,6 +101,57 @@ export default function Tbar({ ...props }) {
         >
           Financeiro
         </Button>
+      </Box>
+      <Box
+        onClick={toggle}
+        display="flex"
+        alignItems="center"
+        style={{ cursor: "pointer" }}
+      >
+        {/* <Typography className={classes.welcomeMessage}>
+          {user?.first_name ? `Olá, ${user.first_name}!` : null}
+        </Typography> */}
+        <Popper
+          open={open}
+          anchorEl={anchorEl}
+          role={undefined}
+          transition
+          disablePortal
+        >
+          {({ TransitionProps, placement }) => (
+            <Grow
+              {...TransitionProps}
+              style={{
+                transformOrigin:
+                  placement === "bottom" ? "center top" : "center bottom",
+              }}
+            >
+              <Paper>
+                <ClickAwayListener onClickAway={() => setAnchorEl(null)}>
+                  <MenuList autoFocusItem={open} id="menu-list-grow">
+                    <MenuItem
+                      onClick={() => {
+                        setAnchorEl(null);
+                        dispatch(authActions.Logout());
+                        history.push("/");
+                      }}
+                      className={classes.menuItem}
+                    >
+                      <ListItemIcon>
+                        <Icon>logout</Icon>
+                      </ListItemIcon>
+                      <ListItemText primary="Sair" />
+                    </MenuItem>
+                  </MenuList>
+                </ClickAwayListener>
+              </Paper>
+            </Grow>
+          )}
+        </Popper>
+
+        <Avatar className={classes.avatar} alt={user?.first_name} src={null} />
+
+        <ExpandMore />
       </Box>
     </Toolbar>
   );
