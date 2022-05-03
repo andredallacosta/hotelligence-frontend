@@ -1,7 +1,7 @@
 import axios from "axios";
 
 // eslint-disable-next-line import/no-mutable-exports
-const url = "http://localhost:8000/api/";
+const url = "https://hotelligence-backend.herokuapp.com/api";
 
 // if (process.env.REACT_APP_ELIXIR_ENV === "production") {
 //   url = "https://api-dot-nexus-production-303715.uc.r.appspot.com/";
