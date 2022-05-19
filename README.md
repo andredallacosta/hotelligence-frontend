@@ -12,4 +12,4 @@ To run this project, please run this sequence of commands in terminal:
 
 `make run`
 
-Thats it, the server will be up and running in *localhost:3000*
+That's it, the server will be up and running in *localhost:3000*
