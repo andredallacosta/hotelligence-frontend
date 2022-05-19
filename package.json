@@ -52,7 +52,7 @@
   },
   "scripts": {
     "start": "GENERATE_SOURCEMAP=false --max_old_space_size=2560 craco start ",
-    "build": "--max_old_space_size=2560 craco build",
+    "build": "craco build",
     "test": "craco test",
     "eject": "react-scripts eject"
   },
