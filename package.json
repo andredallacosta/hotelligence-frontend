@@ -17,6 +17,7 @@
     "@testing-library/user-event": "^7.1.2",
     "awesome-debounce-promise": "^2.1.0",
     "axios": "^0.19.2",
+    "babel-plugin-root-import": "^6.6.0",
     "classnames": "^2.3.1",
     "cpf-cnpj-validator": "^1.0.3",
     "customize-cra": "^1.0.0",
