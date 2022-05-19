@@ -51,8 +51,8 @@
     "redux-thunk": "^2.3.0"
   },
   "scripts": {
-    "start": "GENERATE_SOURCEMAP=false craco start ",
-    "build": "craco build",
+    "start": "GENERATE_SOURCEMAP=false --max_old_space_size=2560 craco start ",
+    "build": "--max_old_space_size=2560 craco build",
     "test": "craco test",
     "eject": "react-scripts eject"
   },
