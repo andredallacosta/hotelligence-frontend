@@ -4,6 +4,8 @@ This is the implementation of the frontend part of Hotelligence, a hotel managem
 
 The project stack counts with React as framework.
 
+The backend project can be accessed by this [Link](https://github.com/andredallacosta/hotelligence-backend)
+
 ## Run
 
 To run this project, please run this sequence of commands in terminal:
