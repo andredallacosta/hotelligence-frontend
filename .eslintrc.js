@@ -40,12 +40,4 @@ module.exports = {
     "react/no-array-index-key": 0,
     "import/no-unresolved": 0,
   },
-  settings: {
-    "import/resolver": {
-      "babel-plugin-root-import": {
-        rootPathPrefix: "~",
-        rootPathSuffix: "src",
-      },
-    },
-  },
 };
