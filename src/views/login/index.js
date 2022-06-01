@@ -1,6 +1,6 @@
 import React, { useEffect, useContext, useState } from "react";
 import { useSelector, useDispatch, shallowEqual } from "react-redux";
-import { Grid, Typography } from "@material-ui/core";
+import { Grid, Typography, CircularProgress } from "@material-ui/core";
 import { useHistory } from "react-router-dom";
 
 import { PassField, TextField, Button, Paper } from "@Components/UI";
@@ -15,10 +15,11 @@ export default function LoginPage() {
 
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const appConstants = useContext(AppContext);
 
-  const { loggedIn } = useSelector(
+  const { loggedIn, loginStatus } = useSelector(
     (state) => state.security.auth,
     shallowEqual
   );
@@ -33,6 +34,14 @@ export default function LoginPage() {
       history.push("/hotelaria");
     }
   }, [loggedIn]);
+
+  useEffect(() => {
+    if (loginStatus === "requesting") {
+      setLoading(true);
+    } else {
+      setLoading(false);
+    }
+  }, [loginStatus]);
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -73,14 +82,18 @@ export default function LoginPage() {
               label="SENHA"
               name="password"
             />
-            <Button
-              type="submit"
-              fullWidth
-              variant="contained"
-              className={classes.button}
-              color="primary"
-              label="LOGIN"
-            />
+            {loading ? (
+              <CircularProgress className={classes.loading} />
+            ) : (
+              <Button
+                type="submit"
+                fullWidth
+                variant="contained"
+                className={classes.button}
+                color="primary"
+                label="LOGIN"
+              />
+            )}
           </form>
         </Paper>
       </Grid>
