@@ -21,6 +21,12 @@ const useStyles = makeStyles((theme) => ({
     marginBottom: theme.spacing(1),
     marginTop: theme.spacing(1),
   },
+  loading: {
+    marginBottom: theme.spacing(2),
+    marginTop: "20px",
+    height: "36px !important",
+    width: "36px !important",
+  },
   button: {
     marginBottom: theme.spacing(2),
     marginTop: theme.spacing(3),
